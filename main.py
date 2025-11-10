@@ -1,6 +1,1 @@
-adar = "king"
-if adar == "melech":
-    print("melech")
-else:
-    print("king")
-print(adar)
+print("yola meleh")
