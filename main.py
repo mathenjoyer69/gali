@@ -1,6 +1,8 @@
 import pygame
 import AirBlock
 import StoneBlock
+import SandBlock
+
 
 class Button:
     def __init__(self, x, y, width, height, variable, color):
@@ -23,19 +25,20 @@ class Simulation:
         self.height = height
         self.speed = speed
         self.matrix = matrix
+        self.type = 1
         self.button = Button(0, 0, 40, 40, True, (120, 120, 120))
-        self.button1 = Button(100, 0, 40, 40, True, (120, 120, 120))
+        self.button1 = Button(100, 0, 40, 40, True, (222, 186, 69))
         self.button2 = Button(200, 0, 40, 40, True, (120, 120, 120))
 
     def update(self):
         if self.button.variable:
             n = len(self.matrix)
-            for i in range(n, -1, -1):
+            for i in range(n - 1, -1, -1):
                 for j in range(n):
                     block = self.matrix[i][j]
                     block.update(self.matrix)
 
-    def draw(self, surface, b1, b2):
+    def draw(self, surface):
         surface.fill((0, 0, 0))
         if self.button.variable:
             #original screen
@@ -54,6 +57,9 @@ class Simulation:
         list_y = pos[1]
         if b_type == 1:
             self.matrix[list_y][list_x] = StoneBlock.StoneBlock(list_x * 20, list_y * 20, b_type)
+        if b_type == 2:
+            print(pos)
+            self.matrix[list_y][list_x] = SandBlock.SandBlock(list_x * 20, list_y * 20, b_type)
 
     @staticmethod
     def get_mouse_index(mouse_pos):
@@ -62,7 +68,8 @@ class Simulation:
     def run(self):
         running = True
         while running:
-            self.draw(self.screen, self.button1, self.button2)
+            self.update()
+            self.draw(self.screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -71,8 +78,16 @@ class Simulation:
                         if self.button.is_over(pygame.mouse.get_pos()):
                             self.button.variable = not self.button.variable
                         if self.button.variable:
-                            self.add_block(1, self.get_mouse_index(pygame.mouse.get_pos()))
+                            self.add_block(self.type, self.get_mouse_index(pygame.mouse.get_pos()))
                         else:
+                            #sand button
+                            if self.button1.is_over(pygame.mouse.get_pos()):
+                                self.button.original_color = self.button1.color
+                                self.type = 2
+                            elif self.button2.is_over(pygame.mouse.get_pos()):
+                                self.button.original_color = self.button2.color
+                                self.type = 1
+
 
 
             pygame.display.flip()

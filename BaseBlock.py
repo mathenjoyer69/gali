@@ -9,4 +9,4 @@ class BaseBlock:
         self.list_x = x / 20
         self.list_y = y / 20
         self.type = type
-        self.rect = pygame.Rect(self.x, self.y, self.size, self.size)
+        self.rect = pygame.Rect(self.list_x * 20, self.list_y * 20, self.size, self.size)

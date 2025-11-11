@@ -7,3 +7,6 @@ class StoneBlock(BaseBlock.BaseBlock):
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)
+
+    def update(self,matrix):
+        pass
