@@ -7,12 +7,24 @@ class Simulation:
         self.width = width
         self.height = height
         self.speed = speed
+        self.matrix = matrix
 
     def update(self):
-        pass
+        n = len(self.matrix)
+        for i in range(n, -1, -1):
+            for j in range(n):
+                block = self.matrix[i][j]
+                block.update()
 
     def draw(self, surface):
         surface.fill((0, 0, 0))
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[1])):
+                block = self.matrix[i][j]
+                block.draw(surface)
+
+    def add_block(self, type: int):
+         pass
 
     def run(self):
         running = True
@@ -21,6 +33,9 @@ class Simulation:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        self.add_block(1)
             pygame.display.flip()
 
 def main():
