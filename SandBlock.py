@@ -17,7 +17,7 @@ class SandBlock(BaseBlock.BaseBlock):
                 self.y += 20
                 self.rect.topleft = (self.x, self.y)
 
-            elif matrix[int(self.list_y + 1)][int(self.list_x - 1)].type == 0:
+            elif matrix[int(self.list_y + 1)][int(self.list_x - 1)].type == 0:**
                 self.list_y += 1
                 self.y += 20
                 self.list_x -= 1
@@ -29,8 +29,7 @@ class SandBlock(BaseBlock.BaseBlock):
                 self.list_x += 1
                 self.x += 20
                 self.rect.topleft = (self.x, self.y)
-        print(self.x, self.y)
-        print(self.list_x, self.list_y)
+
 
     def draw(self,screen):
         pygame.draw.rect(screen,self.color,self.rect)
