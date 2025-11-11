@@ -23,7 +23,7 @@ class Simulation:
                 block = self.matrix[i][j]
                 block.draw(surface)
 
-    def add_block(self, type: int):
+    def add_block(self, type):
          pass
 
     def run(self):
