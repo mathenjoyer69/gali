@@ -1,7 +1,20 @@
 import pygame
-import numpy as np
 import AirBlock
 import StoneBlock
+
+class Button:
+    def __init__(self, x, y, width, height, variable, color):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.color = color
+        self.original_color = color
+        self.variable = variable
+
+    def draw(self, surface):
+        self.color = self.original_color if self.variable else (255, 255, 255)
+        pygame.draw.rect(surface, self.color, self.rect)
+
+    def is_over(self, pos):
+        return self.rect.collidepoint(pos)
 
 class Simulation:
     def __init__(self, screen, width, height, speed, matrix):
@@ -10,40 +23,56 @@ class Simulation:
         self.height = height
         self.speed = speed
         self.matrix = matrix
+        self.button = Button(0, 0, 40, 40, True, (120, 120, 120))
+        self.button1 = Button(100, 0, 40, 40, True, (120, 120, 120))
+        self.button2 = Button(200, 0, 40, 40, True, (120, 120, 120))
 
     def update(self):
-        n = len(self.matrix)
-        for i in range(n, -1, -1):
-            for j in range(n):
-                block = self.matrix[i][j]
-                block.update(self.matrix)
+        if self.button.variable:
+            n = len(self.matrix)
+            for i in range(n, -1, -1):
+                for j in range(n):
+                    block = self.matrix[i][j]
+                    block.update(self.matrix)
 
-    def draw(self, surface):
+    def draw(self, surface, b1, b2):
         surface.fill((0, 0, 0))
-        for i in range(len(self.matrix)):
-            for j in range(len(self.matrix[1])):
-                block = self.matrix[i][j]
-                block.draw(surface)
+        if self.button.variable:
+            #original screen
+            for i in range(len(self.matrix)):
+                for j in range(len(self.matrix[1])):
+                    block = self.matrix[i][j]
+                    block.draw(surface)
+        else:
+            self.button1.draw(surface)
+            self.button2.draw(surface)
 
-    def add_block(self, type, pos):
+        self.button.draw(surface)
+
+    def add_block(self, b_type, pos):
         list_x = pos[0]
         list_y = pos[1]
-        if type == 1:
-            self.matrix[list_y][list_x] = StoneBlock.StoneBlock(list_x*20, list_y*20, type)
+        if b_type == 1:
+            self.matrix[list_y][list_x] = StoneBlock.StoneBlock(list_x * 20, list_y * 20, b_type)
 
-    def get_mouse_index(self, mouse_pos):
+    @staticmethod
+    def get_mouse_index(mouse_pos):
         return int(mouse_pos[0]/20), int(mouse_pos[1]/20)
 
     def run(self):
         running = True
         while running:
-            self.draw(self.screen)
+            self.draw(self.screen, self.button1, self.button2)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        self.add_block(1, self.get_mouse_index(pygame.mouse.get_pos()))
+                        if self.button.is_over(pygame.mouse.get_pos()):
+                            self.button.variable = not self.button.variable
+                        if self.button.variable:
+                            self.add_block(1, self.get_mouse_index(pygame.mouse.get_pos()))
+
             pygame.display.flip()
 
 def main():
