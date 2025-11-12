@@ -19,10 +19,8 @@ class Button:
         return self.rect.collidepoint(pos)
 
 class Simulation:
-    def __init__(self, screen, width, height, speed, matrix):
+    def __init__(self, screen, speed, matrix):
         self.screen = screen
-        self.width = width
-        self.height = height
         self.speed = speed
         self.matrix = matrix
         self.type = 1
@@ -91,7 +89,7 @@ class Simulation:
                         mouse_held = True
                         if self.button.is_over(pygame.mouse.get_pos()):
                             self.button.variable = not self.button.variable
-                        if self.button.variable:
+                        if self.button.variable and not self.button.rect.collidepoint(pygame.mouse.get_pos()):
                             self.add_block(self.type, self.get_mouse_index(pygame.mouse.get_pos()))
                         else:
                             #sand button
@@ -117,10 +115,10 @@ class Simulation:
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((600, 600))
-    matrix =  [[AirBlock.AirBlock(i*20, j*20, (0, 0, 0), 0) for i in range(30)] for j in range(30)]
+    screen = pygame.display.set_mode((800, 800))
+    matrix =  [[AirBlock.AirBlock(i*20, j*20, (0, 0, 0), 0) for i in range(40)] for j in range(40)]
 
-    sim = Simulation(screen, 600, 600, 0.1, matrix)
+    sim = Simulation(screen, 0.1, matrix)
     sim.run()
 
 main()
