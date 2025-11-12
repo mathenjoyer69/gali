@@ -31,19 +31,23 @@ class Simulation:
         self.button2 = Button(200, 0, 40, 40, True, (120, 120, 120))
         self.clock = pygame.time.Clock()
         self.clock.tick(60)
+        self.update_interval = 100
+        self.last_update_time = 0
 
     def update(self):
-        if self.button.variable:
-            n = len(self.matrix)
-            for i in range(n - 1, -1, -1):
-                for j in range(n):
-                    block = self.matrix[i][j]
-                    block.update(self.matrix)
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_update_time >= self.update_interval:
+            self.last_update_time = current_time
+            if self.button.variable:
+                n = len(self.matrix)
+                for i in range(n - 1, -1, -1):
+                    for j in range(n):
+                        block = self.matrix[i][j]
+                        block.update(self.matrix)
 
     def draw(self, surface):
         surface.fill((0, 0, 0))
         if self.button.variable:
-            #original screen
             for i in range(len(self.matrix)):
                 for j in range(len(self.matrix[1])):
                     block = self.matrix[i][j]

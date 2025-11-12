@@ -1,14 +1,12 @@
 import pygame
 import AirBlock
 import BaseBlock
-
+import time
 
 class SandBlock(BaseBlock.BaseBlock):
     def __init__(self, x, y, type):
         super().__init__(x, y, (222, 186, 69),type)
         self.temp = 20
-
-
 
     def update(self, matrix):
         max_y = len(matrix) - 1
