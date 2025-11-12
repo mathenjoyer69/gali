@@ -1,5 +1,3 @@
-import time
-
 import pygame
 import AirBlock
 import StoneBlock
@@ -100,7 +98,6 @@ class Simulation:
                             if self.button1.is_over(pygame.mouse.get_pos()):
                                 self.button.original_color = self.button1.color
                                 self.type = 2
-
                             elif self.button2.is_over(pygame.mouse.get_pos()):
                                 self.button.original_color = self.button2.color
                                 self.type = 1
@@ -109,7 +106,7 @@ class Simulation:
                     if event.button == 1:
                         mouse_held = False
 
-            if mouse_held and self.button.variable:
+            if mouse_held and self.button.variable and not self.button.is_over(pygame.mouse.get_pos()):
                 mouse_pos = pygame.mouse.get_pos()
                 list_x, list_y = self.get_mouse_index(mouse_pos)
                 if 0 <= list_x < len(self.matrix[0]) and 0 <= list_y < len(self.matrix):
