@@ -6,7 +6,6 @@ import AirBlock
 class GlassBlock(BaseBlock.BaseBlock):
     def __init__(self, x, y, color, type):
         super().__init__(x, y, color, type)
-        self.pressure = 0
 
 
     def update(self, matrix):
@@ -22,11 +21,11 @@ class GlassBlock(BaseBlock.BaseBlock):
                 self.x, self.y = nx * 20, ny * 20
                 self.rect.topleft = (self.x, self.y)
 
-            if y < max_y and matrix[y + 1][x].type == "air":
+            if y < max_y and matrix[y + 1][x].type == 0:
                 move_to(x, y + 1)
                 return matrix
-            elif matrix[y - 1][x].type == "sand" and matrix[y - 2][x].type == "sand" and matrix[y - 3][x].type == "sand":
-                matrix[y][x] = AirBlock.AirBlock(self.x, self.y, (0,0,0), "air")
+            elif matrix[y - 1][x].type == 2 and matrix[y - 2][x].type == 2 and matrix[y - 3][x].type == 2:
+                matrix[y][x] = AirBlock.AirBlock(self.x, self.y, (0,0,0), 0)
 
             return matrix
     def draw(self, surface):
