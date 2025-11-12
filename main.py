@@ -63,19 +63,21 @@ class Simulation:
         self.buttons[0].draw(surface)
 
     def add_block(self, b_type, pos):
+        list_x = pos[0]
+        list_y = pos[1]
+        if b_type == 0:
+            self.matrix[list_y][list_x] = AirBlock.AirBlock(list_x * 20, list_y * 20, (0, 0, 0), b_type)
+
         if self.matrix[pos[1]][pos[0]].type == 0:
             current_time = pygame.time.get_ticks()
             if current_time - self.last_update_time_hold >= self.update_hold:
                 self.last_update_time_hold = current_time
-                list_x = pos[0]
-                list_y = pos[1]
+
                 if b_type == 1:
                     self.matrix[list_y][list_x] = StoneBlock.StoneBlock(list_x * 20, list_y * 20, b_type)
                 if b_type == 2:
                     print(pos)
                     self.matrix[list_y][list_x] = SandBlock.SandBlock(list_x * 20, list_y * 20, b_type)
-                if b_type == 0:
-                    self.matrix[list_y][list_x] = AirBlock.AirBlock(list_x * 20, list_y * 20,(0,0,0), b_type)
 
     @staticmethod
     def get_mouse_index(mouse_pos):
