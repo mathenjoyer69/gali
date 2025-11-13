@@ -2,7 +2,7 @@ import pygame
 import AirBlock
 import StoneBlock
 import SandBlock
-
+print("yuola")
 
 class Button:
     def __init__(self, x, y, width, height, variable, color):
