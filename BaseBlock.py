@@ -10,3 +10,9 @@ class BaseBlock:
         self.list_y = y // 20
         self.type = type
         self.rect = pygame.Rect(self.list_x * 20, self.list_y * 20, self.size, self.size)
+
+    def update(self,matrix):
+        pass
+
+    def draw(self, surface):
+        pass

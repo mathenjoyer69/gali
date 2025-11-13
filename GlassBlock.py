@@ -4,8 +4,8 @@ import AirBlock
 
 
 class GlassBlock(BaseBlock.BaseBlock):
-    def __init__(self, x, y, color, type):
-        super().__init__(x, y, color, type)
+    def __init__(self, x, y,  type):
+        super().__init__(x, y, (255,255,255), type)
 
 
     def update(self, matrix):
@@ -24,7 +24,7 @@ class GlassBlock(BaseBlock.BaseBlock):
             if y < max_y and matrix[y + 1][x].type == 0:
                 move_to(x, y + 1)
                 return matrix
-            elif matrix[y - 1][x].type == 2 and matrix[y - 2][x].type == 2 and matrix[y - 3][x].type == 2:
+            elif matrix[y - 1][x].type == 2 and matrix[y - 1][x].moving == False and  matrix[y - 2][x].type == 2 and matrix[y - 2][x].moving == False and matrix[y - 3][x].type == 2 and matrix[y - 3][x].moving == False:
                 matrix[y][x] = AirBlock.AirBlock(self.x, self.y, (0,0,0), 0)
 
             return matrix
