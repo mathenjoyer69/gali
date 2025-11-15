@@ -1,6 +1,7 @@
 import pygame
 import AirBlock
 import BaseBlock
+import GlassBlock
 import time
 import random
 
@@ -8,12 +9,14 @@ class SandBlock(BaseBlock.BaseBlock):
     def __init__(self, x, y, type):
         super().__init__(x, y, (222, 186, 69), type)
         self.temp = 20
+        self.moving = True
 
     def update(self, matrix):
         max_y = len(matrix) - 1
         max_x = len(matrix[0]) - 1
         x = self.list_x
         y = self.list_y
+
 
         def move_to(nx, ny):
             # swap objects in matrix
@@ -25,12 +28,20 @@ class SandBlock(BaseBlock.BaseBlock):
 
         if y < max_y and matrix[y + 1][x].type == 0:
             move_to(x, y + 1)
+            self.moving = True
             # try down left
         elif y < max_y and x > 0 and matrix[y + 1][x - 1].type == 0 and matrix[y][x - 1].type == 0:
             move_to(x - 1, y + 1)
+            self.moving = True
             # try down right
         elif y < max_y and x < max_x and matrix[y + 1][x + 1].type == 0 and matrix[y][x + 1].type == 0:
             move_to(x + 1, y + 1)
+            self.moving = True
+        else:
+            self.moving = False
+        if self.temp >= 1700:
+            matrix[y][x] = GlassBlock.GlassBlock(self.x, self.y, 3)
+
 
         return matrix
 

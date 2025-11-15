@@ -1,8 +1,9 @@
 import pygame
 import AirBlock
+import GlassBlock
 import StoneBlock
 import SandBlock
-print("yuola")
+
 
 class Button:
     def __init__(self, x, y, width, height, variable, color):
@@ -25,7 +26,9 @@ class Simulation:
         self.type = 1 # default block type to place
         self.buttons = [Button(0, 0, 40, 40, True, (120, 120, 120)),
                         Button(200, 0, 40, 40, True, (120, 120, 120)),
-                        Button(100, 0, 40, 40, True, (222, 186, 69))
+                        Button(100, 0, 40, 40, True, (222, 186, 69)),
+                        Button(300, 0, 40, 40, True, (255, 255, 255)),
+                        Button(400, 0, 40, 40, True, (255, 0, 0))
                         ]
 
         self.clock = pygame.time.Clock()
@@ -54,18 +57,19 @@ class Simulation:
                     block = self.matrix[i][j]
                     block.draw(surface)
         else:
-            self.buttons[1].draw(surface)
-            self.buttons[2].draw(surface)
+            for i in self.buttons:
+                i.draw(surface)
 
         self.buttons[0].draw(surface)
 
     def add_block(self, b_type, pos):
+        print(b_type)
         list_x = pos[0]
         list_y = pos[1]
         if b_type == 0:
             self.matrix[list_y][list_x] = AirBlock.AirBlock(list_x * 20, list_y * 20, (0, 0, 0), b_type)
 
-        if self.matrix[pos[1]][pos[0]].type == 0:
+        if self.matrix[pos[1]][pos[0]].type == 0 or b_type == 4:
             current_time = pygame.time.get_ticks()
             if current_time - self.last_update_time_hold >= self.update_hold:
                 self.last_update_time_hold = current_time
@@ -74,6 +78,14 @@ class Simulation:
                     self.matrix[list_y][list_x] = StoneBlock.StoneBlock(list_x * 20, list_y * 20, b_type)
                 if b_type == 2:
                     self.matrix[list_y][list_x] = SandBlock.SandBlock(list_x * 20, list_y * 20, b_type)
+                if b_type == 3:
+                    self.matrix[list_y][list_x] = GlassBlock.GlassBlock(list_x * 20, list_y * 20, b_type)
+                if b_type == 4:
+                    print(self.matrix[list_y][list_x])
+                    if self.matrix[list_y][list_x].type == 2:
+                        self.matrix[list_y][list_x].temp += 40
+                        print(self.matrix[list_y][list_x].temp)
+
 
     @staticmethod
     def get_mouse_index(mouse_pos):
@@ -97,12 +109,11 @@ class Simulation:
                         if self.buttons[0].variable and not self.buttons[0].is_over(pygame.mouse.get_pos()):
                             self.add_block(self.type, self.get_mouse_index(pygame.mouse.get_pos()))
                         else:
-                            if self.buttons[1].is_over(pygame.mouse.get_pos()):
-                                self.buttons[0].original_color = self.buttons[1].color
-                                self.type = 1
-                            elif self.buttons[2].is_over(pygame.mouse.get_pos()):
-                                self.buttons[0].original_color = self.buttons[2].color
-                                self.type = 2
+                            for i in range(1,len(self.buttons)):
+                                if self.buttons[i].is_over(pygame.mouse.get_pos()):
+                                    self.buttons[0].original_color = self.buttons[i].color
+                                    self.type = i
+
                     if event.button == 3:
                         mouse_held_r = True
                         if self.buttons[0].variable and not self.buttons[0].is_over(pygame.mouse.get_pos()):
