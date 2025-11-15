@@ -4,7 +4,7 @@ import AirBlock
 
 
 class GlassBlock(BaseBlock.BaseBlock):
-    def __init__(self, x, y,  type):
+    def __init__(self, x, y, type):
         super().__init__(x, y, (255,255,255), type)
 
 

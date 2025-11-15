@@ -3,6 +3,7 @@ import AirBlock
 import GlassBlock
 import StoneBlock
 import SandBlock
+import Water
 
 
 class Button:
@@ -28,7 +29,8 @@ class Simulation:
                         Button(200, 0, 40, 40, True, (120, 120, 120)),
                         Button(100, 0, 40, 40, True, (222, 186, 69)),
                         Button(300, 0, 40, 40, True, (255, 255, 255)),
-                        Button(400, 0, 40, 40, True, (255, 0, 0))
+                        Button(400, 0, 40, 40, True, (255, 0, 0)),
+                        Button(500, 0, 40, 40, True, (0, 0, 255)),
                         ]
 
         self.clock = pygame.time.Clock()
@@ -63,7 +65,6 @@ class Simulation:
         self.buttons[0].draw(surface)
 
     def add_block(self, b_type, pos):
-        print(b_type)
         list_x = pos[0]
         list_y = pos[1]
         if b_type == 0:
@@ -85,6 +86,8 @@ class Simulation:
                     if self.matrix[list_y][list_x].type == 2:
                         self.matrix[list_y][list_x].temp += 40
                         print(self.matrix[list_y][list_x].temp)
+                if b_type == 5:
+                    self.matrix[list_y][list_x] = Water.Water(list_x * 20, list_y * 20, 20)
 
 
     @staticmethod
